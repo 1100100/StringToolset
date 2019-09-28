@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="StringToolset.JsonViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:linq="clr-namespace:Newtonsoft.Json.Linq;assembly=Newtonsoft.Json"
+             xmlns:valueConverters="clr-namespace:StringToolset.ValueConverters"
+             xmlns:templateSelectors="clr-namespace:StringToolset.TemplateSelectors"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" d:DesignWidth="593.72" d:DesignHeight="364.84" Background="#252526">
+
+    <UserControl.Resources>
+        <valueConverters:MethodToValueConverter x:Key="MethodToValueConverter"/>
+        <valueConverters:ComplexPropertyMethodToValueConverter x:Key="ComplexPropertyMethodToValueConverter"/>
+        <valueConverters:JValueConverter x:Key="JValueConverter"/>
+        <valueConverters:JPropertyTypeToColorConverter x:Key="JPropertyTypeToColorConverter"/>
+        <valueConverters:JValueTypeToColorConverter x:Key="JValueTypeToColorConverter"/>
+        <valueConverters:JArrayLengthConverter x:Key="JArrayLengthConverter"/>
+        <HierarchicalDataTemplate DataType="{x:Type linq:JArray}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+            <StackPanel Orientation="Horizontal" Margin="1">
+                <!--<TextBlock Text="array" Foreground="WhiteSmoke" Background="#a40000" Padding="3, 0, 3, 1" Opacity="0.4" Margin="0,0,5,0"/>-->
+                <TextBlock Text="{Binding Converter={StaticResource JArrayLengthConverter}}" Foreground="#a40000"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate  x:Key="ArrayPropertyTemplate" DataType="{x:Type linq:JProperty}" ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
+            <StackPanel Orientation="Horizontal" Margin="1">
+                <TextBlock Text="{Binding Path=Name, Mode=OneWay}"  Foreground="#efefef"/>
+                <TextBlock Text=" : "  Foreground="#efefef"/>
+                <!--<TextBlock Text="array" Foreground="WhiteSmoke" Background="#a40000" Padding="3, 0, 3, 1" Opacity="0.4" Margin="0,0,5,0"/>-->
+                <TextBlock Text="{Binding Converter={StaticResource JArrayLengthConverter}}" Foreground="#a40000"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate  x:Key="ObjectPropertyTemplate" DataType="{x:Type linq:JProperty}" ItemsSource="{Binding Converter={StaticResource ComplexPropertyMethodToValueConverter}, ConverterParameter='Children'}">
+            <StackPanel Orientation="Horizontal" Margin="1">
+                <TextBlock Text="{Binding Path=Name, Mode=OneWay}"  Foreground="#efefef"/>
+                <TextBlock Text=" : " Foreground="#efefef"/>
+                <TextBlock Text="{}{ }" Foreground="#729fcf"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <DataTemplate x:Key="PrimitivePropertyTemplate" DataType="{x:Type linq:JProperty}" >
+            <StackPanel Orientation="Horizontal" Margin="1" >
+                <TextBlock Text="{Binding Path=Name, Mode=OneWay}" Foreground="#efefef" />
+                <TextBlock Text=" : " Foreground="#efefef"/>
+                <TextBlock Text="  "/>
+
+                <TextBlock  Width="300" 
+                           TextWrapping="Wrap" Text="{Binding Path=Value, Converter={StaticResource JValueConverter}}" 
+                           Foreground="{Binding Converter={StaticResource JPropertyTypeToColorConverter}}" ToolTip="双击复制值" MouseLeftButtonDown="Node_MouseLeftButtonDown" />
+            </StackPanel>
+        </DataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type linq:JObject}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+            <StackPanel Orientation="Horizontal" Margin="1">
+                <TextBlock Text=" "/>
+                <TextBlock Text="{}{ }" Foreground="#729fcf"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type linq:JConstructor}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+            <TextBlock Text="Constructor" Foreground="#efefef">
+            </TextBlock>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type linq:JRaw}" ItemsSource="{Binding Converter={StaticResource MethodToValueConverter}, ConverterParameter='Children'}">
+            <TextBlock Text="Raw">
+            </TextBlock>
+        </HierarchicalDataTemplate>
+
+        <templateSelectors:JPropertyDataTemplateSelector x:Key="JPropertyDataTemplateSelector" 
+                                             ArrayPropertyTemplate="{StaticResource ArrayPropertyTemplate}"
+                                             ObjectPropertyTemplate="{StaticResource ObjectPropertyTemplate}"
+                                             PrimitivePropertyTemplate ="{StaticResource PrimitivePropertyTemplate}"/>
+
+        <DataTemplate DataType="{x:Type linq:JValue}">
+            <TextBlock  Width="300" 
+                           TextWrapping="Wrap" Text="{Binding Converter={StaticResource JValueConverter}}" 
+                           Foreground="{Binding Converter={StaticResource JValueTypeToColorConverter}}"  ToolTip="双击复制值" MouseLeftButtonDown="Node_MouseLeftButtonDown"/>
+        </DataTemplate>
+    </UserControl.Resources>
+    <DockPanel Visibility="Visible"  Background="#252526">
+        <Grid Background="#252526">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="4"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ToolBarPanel  Grid.Row="0" Grid.Column="0" Background="#2E2E34">
+                <ToolBar BorderThickness="0" AllowDrop="False" ToolBarTray.IsLocked="True"  Loaded="ToolBar_Loaded" Margin="10 5 5 5">
+                    <Button Click="FormatJsonClick" ToolTip="格式化" Margin="0 0 10 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Height="20" Source="/Resources/format.png"></Image>
+                            <Label Content="格式化"></Label>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="CleanClick" ToolTip="清空">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Height="20" Source="/Resources/clean.png"></Image>
+                            <Label Content="清空"></Label>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarPanel>
+            <GridSplitter  Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"  Background="#2E2E34" />
+            <ToolBarPanel   Grid.Row="0" Grid.Column="2" Background="#2E2E34">
+                <ToolBar  ToolBarTray.IsLocked="True" Loaded="ToolBar_Loaded"  Margin="10 5 5 5">
+                    <Button ToolTip="全部展开" Click="ExpandAll" Margin="0 0 10 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Height="16" Source="/Resources/expand.png"></Image>
+                            <Label Content="全部展开"></Label>
+                        </StackPanel>
+                    </Button>
+                    <Button ToolTip="全部折叠" Click="CollapseAll">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Height="16" Source="/Resources/collapse.png"></Image>
+                            <Label Content="全部折叠"></Label>
+                        </StackPanel>
+                    </Button>
+                </ToolBar>
+            </ToolBarPanel>
+
+            <TextBox x:Name="JsonInputText"  Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding JsonRaw}"  Padding="10" Background="#252526" Foreground="#efefef" />
+            <GridSplitter  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  Background="#2E2E34" />
+            <TreeView  Grid.Row="1" Grid.Column="2" ItemsSource="{Binding JsonTree}" Padding="10" Name="JsonTreeView" IsTextSearchEnabled="True" ItemTemplateSelector="{StaticResource JPropertyDataTemplateSelector}" DockPanel.Dock="Bottom" BorderThickness="0" Background="#252526">
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}" >
+                        <Setter Property="IsExpanded" Value="true" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+        </Grid>
+    </DockPanel>
+
+</UserControl>

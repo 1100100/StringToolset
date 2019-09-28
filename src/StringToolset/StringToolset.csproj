@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\clean.png" />
+    <None Remove="Resources\collapse.png" />
+    <None Remove="Resources\CollapseAll.png" />
+    <None Remove="Resources\expand.png" />
+    <None Remove="Resources\ExpandAll.png" />
+    <None Remove="Resources\format.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0490" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\clean.png" />
+    <Resource Include="Resources\CollapseAll.png" />
+    <Resource Include="Resources\expand.png" />
+    <Resource Include="Resources\ExpandAll.png" />
+    <Resource Include="Resources\format.png" />
+    <Resource Include="Resources\collapse.png" />
+  </ItemGroup>
+
+</Project>
