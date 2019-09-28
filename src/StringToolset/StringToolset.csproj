@@ -4,15 +4,16 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\clean.png" />
     <None Remove="Resources\collapse.png" />
-    <None Remove="Resources\CollapseAll.png" />
     <None Remove="Resources\expand.png" />
-    <None Remove="Resources\ExpandAll.png" />
     <None Remove="Resources\format.png" />
+    <None Remove="Resources\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,11 +23,10 @@
 
   <ItemGroup>
     <Resource Include="Resources\clean.png" />
-    <Resource Include="Resources\CollapseAll.png" />
     <Resource Include="Resources\expand.png" />
-    <Resource Include="Resources\ExpandAll.png" />
     <Resource Include="Resources\format.png" />
     <Resource Include="Resources\collapse.png" />
+    <Resource Include="Resources\icon.ico" />
   </ItemGroup>
 
 </Project>

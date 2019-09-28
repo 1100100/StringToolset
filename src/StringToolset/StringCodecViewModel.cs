@@ -6,7 +6,7 @@ namespace StringToolset
 {
     public class StringCodecViewModel : ViewModelBase
     {
-        private string _sourceText = "http://baidu.com?a=9&b=5&c=a d a";
+        private string _sourceText;
         public string SourceText
         {
             get => _sourceText; set
