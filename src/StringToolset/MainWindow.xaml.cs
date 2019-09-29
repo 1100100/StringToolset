@@ -20,14 +20,9 @@ namespace StringToolset
 
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        protected async void MessageBox(string title, string message)
-        {
-            await this.ShowMessageAsync(title, message, settings: new MetroDialogSettings { });
         }
 
 
@@ -49,21 +44,51 @@ namespace StringToolset
             switch (codec)
             {
                 case CodecType.EncodeUrl:
+                    if (string.IsNullOrWhiteSpace(_viewModel.SourceText))
+                    {
+                        _viewModel.EncodeText = "";
+                        return;
+                    }
                     _viewModel.EncodeText = Uri.EscapeUriString(_viewModel.SourceText);
                     break;
                 case CodecType.DecodeUrl:
+                    if (string.IsNullOrWhiteSpace(_viewModel.EncodeText))
+                    {
+                        _viewModel.SourceText = "";
+                        return;
+                    }
                     _viewModel.SourceText = Uri.UnescapeDataString(_viewModel.EncodeText);
                     break;
                 case CodecType.EncodeUrlComponent:
+                    if (string.IsNullOrWhiteSpace(_viewModel.SourceText))
+                    {
+                        _viewModel.EncodeText = "";
+                        return;
+                    }
                     _viewModel.EncodeText = HttpUtility.UrlEncode(_viewModel.SourceText);
                     break;
                 case CodecType.DecodeUrlComponent:
+                    if (string.IsNullOrWhiteSpace(_viewModel.EncodeText))
+                    {
+                        _viewModel.SourceText = "";
+                        return;
+                    }
                     _viewModel.SourceText = HttpUtility.UrlDecode(_viewModel.EncodeText);
                     break;
                 case CodecType.EncodeHtml:
+                    if (string.IsNullOrWhiteSpace(_viewModel.SourceText))
+                    {
+                        _viewModel.EncodeText = "";
+                        return;
+                    }
                     _viewModel.EncodeText = HttpUtility.HtmlEncode(_viewModel.SourceText);
                     break;
                 case CodecType.DecodeHtml:
+                    if (string.IsNullOrWhiteSpace(_viewModel.EncodeText))
+                    {
+                        _viewModel.SourceText = "";
+                        return;
+                    }
                     _viewModel.SourceText = HttpUtility.HtmlDecode(_viewModel.EncodeText);
                     break;
             }

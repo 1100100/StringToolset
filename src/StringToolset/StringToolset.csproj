@@ -14,6 +14,8 @@
     <None Remove="Resources\expand.png" />
     <None Remove="Resources\format.png" />
     <None Remove="Resources\icon.ico" />
+    <None Remove="Resources\open.png" />
+    <None Remove="Resources\save.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +29,8 @@
     <Resource Include="Resources\format.png" />
     <Resource Include="Resources\collapse.png" />
     <Resource Include="Resources\icon.ico" />
+    <Resource Include="Resources\open.png" />
+    <Resource Include="Resources\save.png" />
   </ItemGroup>
 
 </Project>

@@ -87,14 +87,27 @@
             </Grid.ColumnDefinitions>
 
             <ToolBarPanel  Grid.Row="0" Grid.Column="0" Background="#2E2E34">
-                <ToolBar BorderThickness="0" AllowDrop="False" ToolBarTray.IsLocked="True"  Loaded="ToolBar_Loaded" Margin="10 5 5 5">
+                <ToolBar BorderThickness="0"  ToolBarTray.IsLocked="True"  Loaded="ToolBar_Loaded" Margin="10 5 5 5">
+                    <Button Click="OpenClick" ToolTip="打开文件" Margin="0 0 10 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Height="20" Source="/Resources/save.png"></Image>
+                            <Label Content="打开文件"></Label>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Click="SaveClick" ToolTip="保存" Margin="0 0 10 0">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="20" Height="20" Source="/Resources/save.png"></Image>
+                            <Label Content="保存"></Label>
+                        </StackPanel>
+                    </Button>
                     <Button Click="FormatJsonClick" ToolTip="格式化" Margin="0 0 10 0">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="20" Height="20" Source="/Resources/format.png"></Image>
                             <Label Content="格式化"></Label>
                         </StackPanel>
                     </Button>
-                    <Button Click="CleanClick" ToolTip="清空">
+                    <Button Click="CleanClick" ToolTip="清空" Margin="0 0 10 0">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="20" Height="20" Source="/Resources/clean.png"></Image>
                             <Label Content="清空"></Label>
@@ -120,7 +133,7 @@
                 </ToolBar>
             </ToolBarPanel>
 
-            <TextBox x:Name="JsonInputText"  Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding JsonRaw}"  Padding="10" Background="#252526" Foreground="#efefef" />
+            <TextBox x:Name="JsonInputText"  Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding JsonRaw}"  Padding="10" Background="#252526" Foreground="#efefef" PreviewDragOver="JsonInputText_PreviewDragOver" PreviewDrop="JsonInputText_PreviewDrop" />
             <GridSplitter  Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  Background="#2E2E34" />
             <TreeView  Grid.Row="1" Grid.Column="2" ItemsSource="{Binding JsonTree}" Padding="10" Name="JsonTreeView" IsTextSearchEnabled="True" ItemTemplateSelector="{StaticResource JPropertyDataTemplateSelector}" DockPanel.Dock="Bottom" BorderThickness="0" Background="#252526">
                 <TreeView.ItemContainerStyle>
@@ -133,3 +146,4 @@
     </DockPanel>
 
 </UserControl>
+ 

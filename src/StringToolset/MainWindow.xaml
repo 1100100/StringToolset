@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:StringToolset"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="字符串工具集" Height="900" Width="1500" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="/Resources/icon.ico">
+        Title="字符串工具集" Height="900" Width="1500" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
 
     <mah:MetroTabControl >
         <mah:MetroTabItem  Header="JSON查看器">

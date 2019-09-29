@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -160,7 +161,7 @@ namespace StringToolset
 
         private void ToolBar_Loaded(object sender, RoutedEventArgs e)
         {
-            ToolBar toolBar = sender as ToolBar;
+            var toolBar = sender as ToolBar;
             if (toolBar != null && toolBar.Template.FindName("OverflowGrid", toolBar) is FrameworkElement overflowGrid)
             {
                 overflowGrid.Visibility = Visibility.Collapsed;
@@ -176,6 +177,49 @@ namespace StringToolset
         {
             _viewModel.JsonTree = null;
             _viewModel.JsonRaw = "";
+        }
+
+        private void SaveClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new SaveFileDialog { Filter = "Json|*.json" };
+            if (dialog.ShowDialog() == true)
+            {
+                File.WriteAllText(dialog.FileName, _viewModel.JsonRaw);
+            }
+        }
+
+        private void OpenClick(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog { Filter = "Json|*.json" };
+            if (dialog.ShowDialog() == true)
+            {
+                _viewModel.JsonRaw = File.ReadAllText(dialog.FileName);
+            }
+        }
+
+        private void DropFile(object sender, DragEventArgs e)
+        {
+            MessageBox.Show("ok");
+        }
+
+        private void DropEnterFile(object sender, DragEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void JsonInputText_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Copy;
+            e.Handled = true;
+        }
+
+        private void JsonInputText_PreviewDrop(object sender, DragEventArgs e)
+        {
+            var fileName = ((Array)e.Data.GetData(DataFormats.FileDrop))?.GetValue(0).ToString();
+            if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
+            {
+                _viewModel.JsonRaw = File.ReadAllText(fileName);
+            }
         }
     }
 }
