@@ -197,15 +197,6 @@ namespace StringToolset
             }
         }
 
-        private void DropFile(object sender, DragEventArgs e)
-        {
-            MessageBox.Show("ok");
-        }
-
-        private void DropEnterFile(object sender, DragEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         private void JsonInputText_PreviewDragOver(object sender, DragEventArgs e)
         {
