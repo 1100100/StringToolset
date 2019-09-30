@@ -16,9 +16,11 @@
     <None Remove="Resources\icon.ico" />
     <None Remove="Resources\open.png" />
     <None Remove="Resources\save.png" />
+    <None Remove="SyntaxHighlighting\JSON.xml" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0490" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
@@ -31,6 +33,9 @@
     <Resource Include="Resources\icon.ico" />
     <Resource Include="Resources\open.png" />
     <Resource Include="Resources\save.png" />
+    <EmbeddedResource Include="SyntaxHighlighting\JSON.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
