@@ -22,7 +22,14 @@ namespace StringToolset
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            var str = "ab{cda[de{gc";
+            //MessageBox.Show(str.Substring(0, 1));
+            //MessageBox.Show(str.IndexOf('{', 0, 1).ToString());
+            //for (var i = 0; i <= 10; i++)
+            //{
+            //    i = 9;
+            //    Console.WriteLine(i);
+            //}
         }
 
 

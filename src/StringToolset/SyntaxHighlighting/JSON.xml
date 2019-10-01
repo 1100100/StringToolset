@@ -6,7 +6,7 @@
 
   <Color name="Key" foreground="#CCCCCC"  />
   <Color name="Value" foreground="#4e9a06" />
-  <Color name="Number" foreground="#8700FF" />
+  <Color name="Number" foreground="#E46F79" />
   <Color name="String" foreground="#4e9a06"  />
   <Color name="Boolean" foreground="#00BFFF" />
   <RuleSet ignoreCase="true">

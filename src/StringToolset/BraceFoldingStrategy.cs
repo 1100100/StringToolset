@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections.Generic;
+using System.Linq;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
 
@@ -30,20 +31,26 @@ namespace StringToolset
         /// <summary>
         /// Gets/Sets the opening brace. The default value is '{'.
         /// </summary>
-        public List<char> OpeningBrace { get; set; }
+        public string[] OpeningBrace { get; set; }
 
         /// <summary>
         /// Gets/Sets the closing brace. The default value is '}'.
         /// </summary>
-        public List<char> ClosingBrace { get; set; }
+        public string[] ClosingBrace { get; set; }
+
+        public char[] Braces { get; set; }
+
+        public string[] Line { get; set; }
 
         /// <summary>
         /// Creates a new BraceFoldingStrategy.
         /// </summary>
         public BraceFoldingStrategy()
         {
-            this.OpeningBrace = new List<char> { '{', '[' };
-            this.ClosingBrace = new List<char> { '}', ']' };
+            OpeningBrace = new[] { "{", "[" };
+            ClosingBrace = new[] { "}", "]" };
+            Line = new[] { "\n", "\r" };
+            Braces = new[] { '{', '[', '}', ']', '\n', '\r' };
         }
 
         public void UpdateFoldings(FoldingManager manager, TextDocument document)
@@ -67,31 +74,51 @@ namespace StringToolset
         /// </summary>
         public IEnumerable<NewFolding> CreateNewFoldings(ITextSource document)
         {
-            List<NewFolding> newFoldings = new List<NewFolding>();
-
-            Stack<int> startOffsets = new Stack<int>();
-            int lastNewLineOffset = 0;
-
-            for (int i = 0; i < document.TextLength; i++)
+            var newFoldings = new List<NewFolding>();
+            var startOffsets = new Stack<int>();
+            var lastNewLineOffset = 0;
+            var currentIndex = 0;
+            var json = document.Text;
+            //for (var i = 0; i < document.TextLength; i++)
+            //{
+            //    var c = document.GetCharAt(i);
+            //    if (c == '{')
+            //    {
+            //        startOffsets.Push(i);
+            //    }
+            //    else if (c == '}' && startOffsets.Count > 0)
+            //    {
+            //        var startOffset = startOffsets.Pop();
+            //        // don't fold if opening and closing brace are on the same line
+            //        if (startOffset < lastNewLineOffset)
+            //        {
+            //            newFoldings.Add(new NewFolding(startOffset, i + 1));
+            //        }
+            //    }
+            //    else if (c == '\n' || c == '\r')
+            //    {
+            //        lastNewLineOffset = i + 1;
+            //    }
+            //}
+            while (true)
             {
-                char c = document.GetCharAt(i);
-                if (OpeningBrace.Contains(c))
+                //开始标记
+                var index = json.IndexOfAny(Braces, currentIndex);
+                if (index == -1)
+                    break;
+                currentIndex = index + 1;
+                var brace = json.Substring(index, 1);
+                if (OpeningBrace.Contains(brace))
+                    startOffsets.Push(index);
+                else if (ClosingBrace.Contains(brace) && startOffsets.Any())
                 {
-                    startOffsets.Push(i);
+                    var start = startOffsets.Pop();
+                    if (start < lastNewLineOffset)
+                        newFoldings.Add(new NewFolding(start, index + 1));
                 }
-                else if (ClosingBrace.Contains(c) && startOffsets.Count > 0)
-                {
-                    int startOffset = startOffsets.Pop();
-                    // don't fold if opening and closing brace are on the same line
-                    if (startOffset < lastNewLineOffset)
-                    {
-                        newFoldings.Add(new NewFolding(startOffset, i + 1));
-                    }
-                }
-                else if (c == '\n' || c == '\r')
-                {
-                    lastNewLineOffset = i + 1;
-                }
+                else if (Line.Contains(brace))
+                    lastNewLineOffset = index + 1;
+
             }
             newFoldings.Sort((a, b) => a.StartOffset.CompareTo(b.StartOffset));
             return newFoldings;

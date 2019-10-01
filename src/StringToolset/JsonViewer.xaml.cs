@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
+using ICSharpCode.AvalonEdit.Search;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
@@ -26,7 +27,7 @@ namespace StringToolset
             _strategy = new BraceFoldingStrategy();
             using var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting\\JSON.xml");
             JsonInputText.SyntaxHighlighting = HighlightingLoader.Load(xmlReader, HighlightingManager.Instance);
-
+            SearchPanel.Install(JsonInputText);
         }
 
         private string JsonRaw

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\clean.png" />
+    <None Remove="Resources\Close.png" />
     <None Remove="Resources\collapse.png" />
     <None Remove="Resources\expand.png" />
     <None Remove="Resources\format.png" />
@@ -27,6 +28,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\clean.png" />
+    <Resource Include="Resources\Close.png" />
     <Resource Include="Resources\expand.png" />
     <Resource Include="Resources\format.png" />
     <Resource Include="Resources\collapse.png" />
