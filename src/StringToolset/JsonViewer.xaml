@@ -6,11 +6,6 @@
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" d:DesignWidth="593.72" d:DesignHeight="364.84" Background="#252526">
-
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-    </UserControl.Resources>
-
     <DockPanel Visibility="Visible"  Background="#252526">
         <Grid Background="#252526">
             <Grid.RowDefinitions>
@@ -83,7 +78,6 @@
                                                     </TextBox.Text>
                                                 </TextBox>
                                                 <!-- FindNext button -->
-
                                                 <Button Command="avalonedit:SearchCommands.FindNext"   ToolTip="下一个(F3)" Style="{DynamicResource MetroAccentButton}" BorderThickness="0" Content="▼" Background="#252526" Margin="3,0,3,0" Padding="0" Height="29" Width="36">
                                                     <Button.Resources>
                                                         <Style x:Key="button" TargetType="{x:Type Button}">
@@ -100,8 +94,6 @@
                                                         </Style>
                                                     </Button.Resources>
                                                 </Button>
-
-
 
                                                 <!-- FindPrevious (set visibility if required) button -->
 

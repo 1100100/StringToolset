@@ -8,30 +8,32 @@
         mc:Ignorable="d"
         Title="字符串工具集" Height="900" Width="1500" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
 
-    <mah:MetroTabControl >
-        <mah:MetroTabItem  Header="JSON查看器">
-            <local:JsonViewer x:Name="JsonTree"></local:JsonViewer>
-        </mah:MetroTabItem>
-        <mah:MetroTabItem  Header="字符串编解码">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBox x:Name="SourceTextInput"  Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding SourceText}"  Padding="10" Background="#2E2E34" Foreground="#efefef" TextChanged="SourceTextInput_TextChanged" />
-                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
-                    <Button Content="Encode URL ▷" Margin="10" Click="UrlEncode_Click"></Button>
-                    <Button Content="◁ Decode URL" Margin="10" Click="UrlDecode_Click"></Button>
-                    <Button Content="Encode URL Component ▷" Margin="10" Click="EncodeUrlComponent_Click"></Button>
-                    <Button Content="◁ Decode URL Component" Margin="10" Click="DecodeUrlComponent_Click"></Button>
-                    <Button Content="Encode HTML ▷" Margin="10" Click="EncodeHtml_Click"></Button>
-                    <Button Content="◁ Decode HTML" Margin="10" Click="DecodeHtml_Click"></Button>
-                </StackPanel>
-                <TextBox x:Name="EncodeTextInput"  Grid.Row="0" Grid.Column="2" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding EncodeText}"  Padding="10" Background="#2E2E34" Foreground="#efefef" TextChanged="EncodeTextInput_TextChanged" />
-            </Grid>
+    <DockPanel>
+        <TabControl  mah:ControlsHelper.HeaderFontFamily="Consolas"  mah:ControlsHelper.HeaderFontSize="18" Margin="0 10 0 0">
+            <TabItem  Header="JSON查看器">
+                <local:JsonViewer x:Name="JsonTree"></local:JsonViewer>
+            </TabItem>
+            <TabItem  Header="字符串编解码">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="SourceTextInput"  Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding SourceText}"  Padding="10" Background="#2E2E34" Foreground="#efefef" TextChanged="SourceTextInput_TextChanged" />
+                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                        <Button Content="Encode URL ▷" Margin="10" Click="UrlEncode_Click"></Button>
+                        <Button Content="◁ Decode URL" Margin="10" Click="UrlDecode_Click"></Button>
+                        <Button Content="Encode URL Component ▷" Margin="10" Click="EncodeUrlComponent_Click"></Button>
+                        <Button Content="◁ Decode URL Component" Margin="10" Click="DecodeUrlComponent_Click"></Button>
+                        <Button Content="Encode HTML ▷" Margin="10" Click="EncodeHtml_Click"></Button>
+                        <Button Content="◁ Decode HTML" Margin="10" Click="DecodeHtml_Click"></Button>
+                    </StackPanel>
+                    <TextBox x:Name="EncodeTextInput"  Grid.Row="0" Grid.Column="2" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" AcceptsReturn="True" BorderThickness="0" Text="{Binding EncodeText}"  Padding="10" Background="#2E2E34" Foreground="#efefef" TextChanged="EncodeTextInput_TextChanged" />
+                </Grid>
 
-        </mah:MetroTabItem>
-    </mah:MetroTabControl>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
 </mah:MetroWindow>
 

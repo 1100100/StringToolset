@@ -68,7 +68,7 @@ namespace StringToolset
                 }
                 catch (Exception ex)
                 {
-                    var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                    var metroWindow = Application.Current.MainWindow as MetroWindow;
                     await metroWindow.ShowMessageAsync("错误", ex.Message);
                 }
                 finally
@@ -78,7 +78,7 @@ namespace StringToolset
             }
             catch (Exception ex)
             {
-                var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                var metroWindow = Application.Current.MainWindow as MetroWindow;
                 await metroWindow.ShowMessageAsync("错误", ex.Message);
             }
         }
@@ -156,13 +156,15 @@ namespace StringToolset
 
         private async void Replace_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (string.IsNullOrEmpty(_viewerModel.SearchText))
+                return;
             try
             {
                 JsonInputText.Document.Replace(JsonInputText.SelectionStart, JsonInputText.SelectionLength, _viewerModel.ReplaceText);
             }
             catch (Exception ex)
             {
-                var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                var metroWindow = Application.Current.MainWindow as MetroWindow;
                 await metroWindow.ShowMessageAsync("错误", ex.Message);
             }
         }
@@ -174,7 +176,9 @@ namespace StringToolset
 
         private async void ReplaceAll_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var metroWindow = (Application.Current.MainWindow as MetroWindow);
+            if (string.IsNullOrEmpty(_viewerModel.SearchText))
+                return;
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
             var dialogResult = await metroWindow.ShowMessageAsync("警告", $"确定要替换所有的字符\"{_viewerModel.SearchText}\"吗？", MessageDialogStyle.AffirmativeAndNegative);
             if (dialogResult != MessageDialogResult.Affirmative) return;
             var regex = GetRegEx(_viewerModel.SearchText);

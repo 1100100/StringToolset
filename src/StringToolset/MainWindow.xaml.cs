@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Web;
 using System.Windows;
 using System.Windows.Controls;
@@ -129,6 +131,17 @@ namespace StringToolset
         private void EncodeHtml_Click(object sender, RoutedEventArgs e)
         {
             Codec(CodecType.EncodeHtml);
+        }
+    }
+    public static class DockHelper
+    {
+        public static IEnumerable GetDockValues()
+        {
+            yield return null;
+            foreach (var dockValue in Enum.GetValues(typeof(Dock)))
+            {
+                yield return dockValue;
+            }
         }
     }
 }
