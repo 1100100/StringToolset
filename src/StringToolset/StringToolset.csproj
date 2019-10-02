@@ -16,6 +16,8 @@
     <None Remove="Resources\format.png" />
     <None Remove="Resources\icon.ico" />
     <None Remove="Resources\open.png" />
+    <None Remove="Resources\replace-all.png" />
+    <None Remove="Resources\replace.png" />
     <None Remove="Resources\save.png" />
     <None Remove="SyntaxHighlighting\JSON.xml" />
   </ItemGroup>
@@ -34,6 +36,8 @@
     <Resource Include="Resources\collapse.png" />
     <Resource Include="Resources\icon.ico" />
     <Resource Include="Resources\open.png" />
+    <Resource Include="Resources\replace-all.png" />
+    <Resource Include="Resources\replace.png" />
     <Resource Include="Resources\save.png" />
     <EmbeddedResource Include="SyntaxHighlighting\JSON.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

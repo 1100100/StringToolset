@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
@@ -18,10 +20,10 @@ namespace StringToolset
     {
         private readonly FoldingManager _foldingManager;
         private readonly BraceFoldingStrategy _strategy;
-
-
+        private readonly JsonViewerModel _viewerModel = new JsonViewerModel();
         public JsonViewer()
         {
+            DataContext = _viewerModel;
             InitializeComponent();
             _foldingManager = FoldingManager.Install(JsonInputText.TextArea);
             _strategy = new BraceFoldingStrategy();
@@ -32,6 +34,7 @@ namespace StringToolset
 
         private string JsonRaw
         {
+            get => JsonInputText.Text;
             set => JsonInputText.Text = value;
         }
 
@@ -139,6 +142,100 @@ namespace StringToolset
         private void JsonInputText_TextChanged(object sender, EventArgs e)
         {
             _strategy.UpdateFoldings(_foldingManager, JsonInputText.Document);
+        }
+
+        private void SwitchReplace_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _viewerModel.ShowReplace = _viewerModel.ShowReplace == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+            _viewerModel.IsShowReplace = !_viewerModel.IsShowReplace;
+        }
+
+        private void Replace_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                JsonInputText.Document.Replace(JsonInputText.SelectionStart, JsonInputText.SelectionLength, _viewerModel.ReplaceText);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+                // ignored
+            }
+        }
+
+        private void Replace_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewerModel.ReplaceText = ((TextBox)sender).Text;
+        }
+
+        private void ReplaceAll_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (MessageBox.Show("确定要替换所有的?",
+                    "Replace All", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                var regex = GetRegEx(_viewerModel.SearchText);
+                var offset = 0;
+                JsonInputText.BeginChange();
+                foreach (Match match in regex.Matches(JsonRaw))
+                {
+                    var v = match.Value;
+                    JsonInputText.Document.Replace(offset + match.Index, match.Length, _viewerModel.ReplaceText);
+                    offset += _viewerModel.ReplaceText.Length - match.Length;
+                }
+                JsonInputText.EndChange();
+            }
+        }
+        private Regex GetRegEx(string oldText)
+        {
+            var options = RegexOptions.None;
+
+            if (_viewerModel.MatchCase == false)
+                options |= RegexOptions.IgnoreCase;
+
+            if (_viewerModel.UserRegex)
+                return new Regex(oldText, options);
+
+            var pattern = Regex.Escape(oldText);
+            if (_viewerModel.WholeWord)
+                pattern = "\\b" + pattern + "\\b";
+            return new Regex(pattern, options);
+        }
+
+        private void Search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewerModel.SearchText = ((TextBox)sender).Text;
+        }
+
+
+        private void MatchCaseChecked(object sender, RoutedEventArgs e)
+        {
+            _viewerModel.MatchCase = true;
+        }
+
+        private void MatchCaseUnchecked(object sender, RoutedEventArgs e)
+        {
+            _viewerModel.MatchCase = false;
+        }
+
+        private void WholeWordsChecked(object sender, RoutedEventArgs e)
+        {
+            _viewerModel.WholeWord = true;
+        }
+
+        private void WholeWordsUnchecked(object sender, RoutedEventArgs e)
+        {
+            _viewerModel.WholeWord = false;
+        }
+
+        private void RegexUnchecked(object sender, RoutedEventArgs e)
+        {
+            _viewerModel.UserRegex = false;
+        }
+
+        private void UseRegexChecked(object sender, RoutedEventArgs e)
+        {
+            _viewerModel.UserRegex = true;
         }
     }
 }
