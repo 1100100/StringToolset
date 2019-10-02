@@ -8,13 +8,13 @@
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400" Background="#252526">
 
     <UserControl.Resources>
-        <RoutedUICommand x:Key="SaveClick" Text="SaveClick"/>
+        <RoutedUICommand x:Key="SavePressKey" Text="SavePressKey"/>
     </UserControl.Resources>
     <UserControl.InputBindings>
-        <KeyBinding Gesture="Ctrl+S" Key="s"  Command="{StaticResource SaveClick}"/>
+        <KeyBinding Gesture="Ctrl+S" Key="s"  Command="{StaticResource SavePressKey}"/>
     </UserControl.InputBindings>
     <UserControl.CommandBindings>
-        <CommandBinding Command="{StaticResource SaveClick}" CanExecute="SavePressKey"/>
+        <CommandBinding Command="{StaticResource SavePressKey}" CanExecute="SavePressKey"/>
     </UserControl.CommandBindings>
     <DockPanel Visibility="Visible"  Background="#252526">
         <Grid Background="#252526">
@@ -89,20 +89,6 @@
                                                 </TextBox>
                                                 <!-- FindNext button -->
                                                 <Button Command="avalonedit:SearchCommands.FindNext"   ToolTip="下一个(F3)" Style="{DynamicResource MetroAccentButton}" BorderThickness="0" Content="▼" Background="#252526" Margin="3,0,3,0" Padding="0" Height="29" Width="36">
-                                                    <Button.Resources>
-                                                        <Style x:Key="button" TargetType="{x:Type Button}">
-                                                            <Setter Property="Background" Value="#252526"/>
-                                                            <Style.Triggers>
-                                                                <Trigger Property="IsMouseOver"  Value="True">
-                                                                    <Setter Property="Background" Value="#2E2E34"/>
-                                                                </Trigger>
-                                                                <Trigger Property="IsFocused" Value="True">
-                                                                    <Setter Property="BorderBrush" Value="Transparent" />
-                                                                    <Setter Property="BorderThickness" Value="0" />
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Button.Resources>
                                                 </Button>
 
                                                 <!-- FindPrevious (set visibility if required) button -->

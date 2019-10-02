@@ -175,7 +175,11 @@ namespace StringToolset
             if (string.IsNullOrEmpty(_viewerModel.SearchText))
                 return;
             var metroWindow = Application.Current.MainWindow as MetroWindow;
-            var dialogResult = await metroWindow.ShowMessageAsync("警告", $"确定要替换所有的字符{_viewerModel.SearchText}吗？", MessageDialogStyle.AffirmativeAndNegative);
+            var dialogResult = await metroWindow.ShowMessageAsync("提示", $"确定要替换所有的字符{_viewerModel.SearchText}吗？", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+            {
+                AffirmativeButtonText = "确定",
+                NegativeButtonText = "取消"
+            });
             if (dialogResult != MessageDialogResult.Affirmative) return;
             var regex = GetRegEx(_viewerModel.SearchText);
             var offset = 0;
