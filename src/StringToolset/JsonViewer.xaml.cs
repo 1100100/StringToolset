@@ -111,11 +111,7 @@ namespace StringToolset
 
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new SaveFileDialog { Filter = "Json|*.json" };
-            if (dialog.ShowDialog() == true)
-            {
-                File.WriteAllText(dialog.FileName, JsonInputText.Text);
-            }
+            SaveDocument();
         }
 
         private void OpenClick(object sender, RoutedEventArgs e)
@@ -179,7 +175,7 @@ namespace StringToolset
             if (string.IsNullOrEmpty(_viewerModel.SearchText))
                 return;
             var metroWindow = Application.Current.MainWindow as MetroWindow;
-            var dialogResult = await metroWindow.ShowMessageAsync("警告", $"确定要替换所有的字符\"{_viewerModel.SearchText}\"吗？", MessageDialogStyle.AffirmativeAndNegative);
+            var dialogResult = await metroWindow.ShowMessageAsync("警告", $"确定要替换所有的字符{_viewerModel.SearchText}吗？", MessageDialogStyle.AffirmativeAndNegative);
             if (dialogResult != MessageDialogResult.Affirmative) return;
             var regex = GetRegEx(_viewerModel.SearchText);
             var offset = 0;
@@ -241,6 +237,20 @@ namespace StringToolset
         private void UseRegexChecked(object sender, RoutedEventArgs e)
         {
             _viewerModel.UserRegex = true;
+        }
+
+        private void SavePressKey(object sender, CanExecuteRoutedEventArgs e)
+        {
+            SaveDocument();
+        }
+
+        private void SaveDocument()
+        {
+            var dialog = new SaveFileDialog { Filter = "Json|*.json" };
+            if (dialog.ShowDialog() == true)
+            {
+                File.WriteAllText(dialog.FileName, JsonInputText.Text);
+            }
         }
     }
 }

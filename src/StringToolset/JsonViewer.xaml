@@ -5,7 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d" d:DesignWidth="593.72" d:DesignHeight="364.84" Background="#252526">
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400" Background="#252526">
+
+    <UserControl.Resources>
+        <RoutedUICommand x:Key="SaveClick" Text="SaveClick"/>
+    </UserControl.Resources>
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+S" Key="s"  Command="{StaticResource SaveClick}"/>
+    </UserControl.InputBindings>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource SaveClick}" CanExecute="SavePressKey"/>
+    </UserControl.CommandBindings>
     <DockPanel Visibility="Visible"  Background="#252526">
         <Grid Background="#252526">
             <Grid.RowDefinitions>
@@ -101,7 +111,7 @@
                                                 </Button>
 
                                                 <StackPanel Orientation="Horizontal" Margin="20 0 0 0">
-                                                    <CheckBox ToolTip="匹配大小写" IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}" Margin="0 0 10 0" Checked="MatchCaseChecked" Unchecked="MatchCaseUnchecked">aA</CheckBox>
+                                                    <CheckBox ToolTip="区分大小写" IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}" Margin="0 0 10 0" Checked="MatchCaseChecked" Unchecked="MatchCaseUnchecked">aA</CheckBox>
 
                                                     <CheckBox Style="{DynamicResource MetroCircleToggleButtonStyle}" ToolTip="匹配整个词"  IsChecked="{Binding WholeWords, RelativeSource={RelativeSource TemplatedParent}}"  Margin="0 0 10 0"  Checked="WholeWordsChecked" Unchecked="WholeWordsUnchecked">Ab</CheckBox>
 

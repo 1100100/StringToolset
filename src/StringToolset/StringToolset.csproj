@@ -10,9 +10,6 @@
 
   <ItemGroup>
     <None Remove="Resources\clean.png" />
-    <None Remove="Resources\Close.png" />
-    <None Remove="Resources\collapse.png" />
-    <None Remove="Resources\expand.png" />
     <None Remove="Resources\format.png" />
     <None Remove="Resources\icon.ico" />
     <None Remove="Resources\open.png" />
@@ -30,10 +27,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\clean.png" />
-    <Resource Include="Resources\Close.png" />
-    <Resource Include="Resources\expand.png" />
     <Resource Include="Resources\format.png" />
-    <Resource Include="Resources\collapse.png" />
     <Resource Include="Resources\icon.ico" />
     <Resource Include="Resources\open.png" />
     <Resource Include="Resources\replace-all.png" />
