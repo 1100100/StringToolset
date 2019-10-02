@@ -8,6 +8,8 @@ using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Search;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 
@@ -66,7 +68,8 @@ namespace StringToolset
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                    await metroWindow.ShowMessageAsync("错误", ex.Message);
                 }
                 finally
                 {
@@ -75,7 +78,8 @@ namespace StringToolset
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                await metroWindow.ShowMessageAsync("错误", ex.Message);
             }
         }
 
@@ -150,7 +154,7 @@ namespace StringToolset
             _viewerModel.IsShowReplace = !_viewerModel.IsShowReplace;
         }
 
-        private void Replace_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void Replace_MouseDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -158,9 +162,8 @@ namespace StringToolset
             }
             catch (Exception ex)
             {
-
-                MessageBox.Show(ex.Message);
-                // ignored
+                var metroWindow = (Application.Current.MainWindow as MetroWindow);
+                await metroWindow.ShowMessageAsync("错误", ex.Message);
             }
         }
 
@@ -169,22 +172,20 @@ namespace StringToolset
             _viewerModel.ReplaceText = ((TextBox)sender).Text;
         }
 
-        private void ReplaceAll_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void ReplaceAll_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (MessageBox.Show("确定要替换所有的?",
-                    "Replace All", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            var metroWindow = (Application.Current.MainWindow as MetroWindow);
+            var dialogResult = await metroWindow.ShowMessageAsync("警告", $"确定要替换所有的字符\"{_viewerModel.SearchText}\"吗？", MessageDialogStyle.AffirmativeAndNegative);
+            if (dialogResult != MessageDialogResult.Affirmative) return;
+            var regex = GetRegEx(_viewerModel.SearchText);
+            var offset = 0;
+            JsonInputText.BeginChange();
+            foreach (Match match in regex.Matches(JsonRaw))
             {
-                var regex = GetRegEx(_viewerModel.SearchText);
-                var offset = 0;
-                JsonInputText.BeginChange();
-                foreach (Match match in regex.Matches(JsonRaw))
-                {
-                    var v = match.Value;
-                    JsonInputText.Document.Replace(offset + match.Index, match.Length, _viewerModel.ReplaceText);
-                    offset += _viewerModel.ReplaceText.Length - match.Length;
-                }
-                JsonInputText.EndChange();
+                JsonInputText.Document.Replace(offset + match.Index, match.Length, _viewerModel.ReplaceText);
+                offset += _viewerModel.ReplaceText.Length - match.Length;
             }
+            JsonInputText.EndChange();
         }
         private Regex GetRegEx(string oldText)
         {
