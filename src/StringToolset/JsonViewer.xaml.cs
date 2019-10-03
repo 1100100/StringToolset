@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -114,12 +115,12 @@ namespace StringToolset
             SaveDocument();
         }
 
-        private void OpenClick(object sender, RoutedEventArgs e)
+        private async void OpenClick(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog { Filter = "Json|*.json" };
             if (dialog.ShowDialog() == true)
             {
-                SetEditorValue(File.ReadAllText(dialog.FileName));
+                await OpenFile(dialog.FileName);
             }
         }
 
@@ -130,12 +131,23 @@ namespace StringToolset
             e.Handled = true;
         }
 
-        private void JsonInputText_PreviewDrop(object sender, DragEventArgs e)
+        private async void JsonInputText_PreviewDrop(object sender, DragEventArgs e)
         {
             var fileName = ((Array)e.Data.GetData(DataFormats.FileDrop))?.GetValue(0).ToString();
             if (!string.IsNullOrWhiteSpace(fileName) && File.Exists(fileName))
             {
-                SetEditorValue(File.ReadAllText(fileName));
+                await OpenFile(fileName);
+            }
+        }
+        private async Task OpenFile(string filename)
+        {
+            try
+            {
+                SetEditorValue(await File.ReadAllTextAsync(filename));
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -144,7 +156,7 @@ namespace StringToolset
             _strategy.UpdateFoldings(_foldingManager, JsonInputText.Document);
         }
 
-        private void SwitchReplace_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void SwitchReplace_MouseDown(object sender, MouseButtonEventArgs e)
         {
             _viewerModel.ShowReplace = _viewerModel.ShowReplace == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
             _viewerModel.IsShowReplace = !_viewerModel.IsShowReplace;
@@ -248,12 +260,12 @@ namespace StringToolset
             SaveDocument();
         }
 
-        private void SaveDocument()
+        private async void SaveDocument()
         {
             var dialog = new SaveFileDialog { Filter = "Json|*.json" };
             if (dialog.ShowDialog() == true)
             {
-                File.WriteAllText(dialog.FileName, JsonInputText.Text);
+                await File.WriteAllTextAsync(dialog.FileName, JsonInputText.Text);
             }
         }
     }
