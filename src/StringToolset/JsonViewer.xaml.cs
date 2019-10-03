@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
@@ -30,8 +31,9 @@ namespace StringToolset
             InitializeComponent();
             _foldingManager = FoldingManager.Install(JsonInputText.TextArea);
             _strategy = new BraceFoldingStrategy();
-            using var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting\\JSON.xml");
+            using var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting/JSON.xshd");
             JsonInputText.SyntaxHighlighting = HighlightingLoader.Load(xmlReader, HighlightingManager.Instance);
+            JsonInputText.TextArea.TextView.LinkTextForegroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#0080FF"));
             SearchPanel.Install(JsonInputText);
         }
 

@@ -24,15 +24,6 @@ namespace StringToolset
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var str = "ab{cda[de{gc";
-            //MessageBox.Show(str.Substring(0, 1));
-            //MessageBox.Show(str.IndexOf('{', 0, 1).ToString());
-            //for (var i = 0; i <= 10; i++)
-            //{
-            //    i = 9;
-            //    Console.WriteLine(i);
-            //}
-
         }
 
 
@@ -131,17 +122,6 @@ namespace StringToolset
         private void EncodeHtml_Click(object sender, RoutedEventArgs e)
         {
             Codec(CodecType.EncodeHtml);
-        }
-    }
-    public static class DockHelper
-    {
-        public static IEnumerable GetDockValues()
-        {
-            yield return null;
-            foreach (var dockValue in Enum.GetValues(typeof(Dock)))
-            {
-                yield return dockValue;
-            }
         }
     }
 }

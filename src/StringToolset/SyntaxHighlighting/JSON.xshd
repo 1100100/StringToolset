@@ -7,8 +7,7 @@
   <Color name="Value" foreground="#4e9a06" />
   <Color name="Number" foreground="#E46F79" />
   <Color name="String" foreground="#4e9a06"  />
-  <Color name="Boolean" foreground="#00BFFF" />
-  <Color name="Url" foreground="#ff0000" />
+  <Color name="Boolean" foreground="#008080" />
   <RuleSet ignoreCase="true">
     <Keywords color="Boolean">
       <Word>true</Word>

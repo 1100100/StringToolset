@@ -16,7 +16,7 @@
     <None Remove="Resources\replace-all.png" />
     <None Remove="Resources\replace.png" />
     <None Remove="Resources\save.png" />
-    <None Remove="SyntaxHighlighting\JSON.xml" />
+    <None Remove="SyntaxHighlighting\JSON.xshd" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,7 +33,7 @@
     <Resource Include="Resources\replace-all.png" />
     <Resource Include="Resources\replace.png" />
     <Resource Include="Resources\save.png" />
-    <EmbeddedResource Include="SyntaxHighlighting\JSON.xml">
+    <EmbeddedResource Include="SyntaxHighlighting\JSON.xshd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
