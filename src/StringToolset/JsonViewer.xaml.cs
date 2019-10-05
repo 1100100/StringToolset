@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
@@ -25,6 +26,19 @@ namespace StringToolset
         private readonly FoldingManager _foldingManager;
         private readonly BraceFoldingStrategy _strategy;
         private readonly JsonViewerModel _viewerModel = new JsonViewerModel();
+
+        public static IHighlightingDefinition SyntaxHighlighting { get; private set; }
+        public static ICommand ReplaceCommand { get; } = new CustomCommand(async par =>
+        {
+            var editor = (TextEditor)par;
+            editor.Text = "";
+        });
+        static JsonViewer()
+        {
+            using var xmlReader = new System.Xml.XmlTextReader("SyntaxHighlighting/JSON.xshd");
+            SyntaxHighlighting = HighlightingLoader.Load(xmlReader, HighlightingManager.Instance);
+        }
+
         public JsonViewer()
         {
             DataContext = _viewerModel;

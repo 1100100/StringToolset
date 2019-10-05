@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\clean.png" />
+    <None Remove="Resources\close.png" />
     <None Remove="Resources\format.png" />
     <None Remove="Resources\icon.ico" />
     <None Remove="Resources\open.png" />
@@ -23,10 +24,12 @@
     <PackageReference Include="AvalonEdit" Version="6.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0490" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\clean.png" />
+    <Resource Include="Resources\close.png" />
     <Resource Include="Resources\format.png" />
     <Resource Include="Resources\icon.ico" />
     <Resource Include="Resources\open.png" />

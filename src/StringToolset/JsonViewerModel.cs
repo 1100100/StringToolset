@@ -1,9 +1,24 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Search;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 
 namespace StringToolset
 {
     public class JsonViewerModel : ViewModelBase
     {
+
+        #region
         private Visibility _showReplace = Visibility.Hidden;
 
         public Visibility ShowReplace
@@ -88,5 +103,121 @@ namespace StringToolset
                 OnPropertyChanged(nameof(WholeWord));
             }
         }
+        #endregion
+
+
+
+        public ObservableCollection<Tab> Tabs { get; set; } = new ObservableCollection<Tab> { new Tab { Title = "tab1" } };
+    }
+
+    public class Tab
+    {
+        public string Title { get; set; }
+
+
+        private BraceFoldingStrategy BraceFoldingStrategy { get; set; }
+
+        private FoldingManager FoldingManager { get; set; }
+
+        private SearchPanel SearchPanel { get; set; }
+
+        public ICommand LoadedCommand { get; } = new CustomCommand(par =>
+        {
+            var editor = (TextEditor)par;
+            editor.TextChanged += Editor_TextChanged;
+            var context = (Tab)editor.DataContext;
+            context.FoldingManager = FoldingManager.Install(editor.TextArea);
+            context.BraceFoldingStrategy = new BraceFoldingStrategy();
+            context.SearchPanel = SearchPanel.Install(editor);
+        });
+
+        private static void Editor_TextChanged(object sender, EventArgs e)
+        {
+            var editor = (TextEditor)sender;
+            var context = (Tab)editor.DataContext;
+            context.BraceFoldingStrategy.UpdateFoldings(context.FoldingManager, editor.Document);
+        }
+
+        public ICommand OpenFileCommand { get; } = new CustomCommand(async par =>
+        {
+            var editor = (TextEditor)par;
+            var dialog = new OpenFileDialog { Filter = "Json|*.json" };
+            if (dialog.ShowDialog() == true)
+            {
+                editor.Text = await File.ReadAllTextAsync(dialog.FileName);
+            }
+        });
+
+        public ICommand SaveCommand { get; } = new CustomCommand(async par =>
+        {
+            var editor = (TextEditor)par;
+            await SaveDocument(editor.Text);
+        });
+
+        private static async Task SaveDocument(string text)
+        {
+            var dialog = new SaveFileDialog { Filter = "Json|*.json" };
+            if (dialog.ShowDialog() == true)
+            {
+                await File.WriteAllTextAsync(dialog.FileName, text);
+            }
+        }
+
+        public ICommand FormatCommand { get; } = new CustomCommand(async par =>
+        {
+            var editor = (TextEditor)par;
+            var context = (Tab)editor.DataContext;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(editor.Text))
+                {
+                    return;
+                }
+                var s = new JsonSerializer();
+                JsonReader reader = new JsonTextReader(new StringReader(editor.Text));
+                var jsonObject = s.Deserialize(reader);
+                if (jsonObject == null) return;
+
+                await using var sWriter = new StringWriter();
+                var writer = new JsonTextWriter(sWriter)
+                {
+                    Formatting = Formatting.Indented,
+                    Indentation = 4,
+                    IndentChar = ' '
+                };
+                try
+                {
+                    s.Serialize(writer, jsonObject);
+                    editor.Text = sWriter.ToString();
+                    context.BraceFoldingStrategy.UpdateFoldings(context.FoldingManager, editor.Document);
+                }
+                catch (Exception ex)
+                {
+                    var metroWindow = Application.Current.MainWindow as MetroWindow;
+                    await metroWindow.ShowMessageAsync("错误", ex.Message);
+                }
+                finally
+                {
+                    await writer.CloseAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                var metroWindow = Application.Current.MainWindow as MetroWindow;
+                await metroWindow.ShowMessageAsync("错误", ex.Message);
+            }
+        });
+
+        public ICommand CleanCommand { get; } = new CustomCommand(async par =>
+        {
+            var editor = (TextEditor)par;
+            editor.Text = "";
+        });
+
+        public ICommand ReplaceCommand { get; } = new CustomCommand(async par =>
+        {
+            var editor = (TextEditor)par;
+            editor.Text = "";
+        });
     }
 }
