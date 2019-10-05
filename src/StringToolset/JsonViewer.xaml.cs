@@ -192,8 +192,10 @@ namespace StringToolset
             var dialogResult = await metroWindow.ShowMessageAsync("提示", $"确定要替换所有的字符{_viewerModel.SearchText}吗？", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
             {
                 AffirmativeButtonText = "确定",
-                NegativeButtonText = "取消"
-            });
+                NegativeButtonText = "取消",
+                AnimateShow = false,
+                AnimateHide = false
+            }); ;
             if (dialogResult != MessageDialogResult.Affirmative) return;
             var regex = GetRegEx(_viewerModel.SearchText);
             var offset = 0;
