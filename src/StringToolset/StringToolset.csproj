@@ -22,7 +22,7 @@
   <ItemGroup>
     <PackageReference Include="AvalonEdit" Version="6.0.0" />
     <PackageReference Include="MahApps.Metro" Version="2.0.0-alpha0490" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
